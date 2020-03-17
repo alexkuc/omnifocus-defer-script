@@ -56,43 +56,35 @@ tell application "OmniFocus"
 				
 				--- --- condition2: has no repeat schedule
 				
+				set nextDeferDate to current date
+				
 				if defer date of theTask is missing value then
 					
 					--- defer date is empty (either new task or defer date was removed manually):
 					
-					set baseDate to current date
+					set nextDeferDate's hours to deferTimeHours
 					
-					set baseDate's hours to deferTimeHours
+					set nextDeferDate's minutes to deferTimeMinutes
 					
-					set baseDate's minutes to deferTimeMinutes
-					
-					set baseDate's seconds to deferTimeSeconds
-					
-					set nextDeferDate to baseDate + (1 * days)
+					set nextDeferDate's seconds to deferTimeSeconds
 					
 				else
 					
-					--- defer date is set (re-use time but skip the day):
+					--- defer date is set (keep time, reschedule date only):
 					
-					set currentDeferDate to defer date of theTask
+					set deferDate to defer date of theTask
 					
-					set currentDate to current date
+					set nextDeferDate's hours to deferDate's hours
 					
-					if currentDate's hours ² deferTimeHours then
+					set nextDeferDate's minutes to deferDate's minutes
+					
+					set nextDeferDate's seconds to deferDate's seconds
+					
+					if nextDeferDate ² (current date) then
 						
-						set nextDeferDate to current date
-						
-					else
-						
-						set nextDeferDate to (current date) + (1 * days)
+						set nextDeferDate to nextDeferDate + (1 * days)
 						
 					end if
-					
-					set nextDeferDate's hours to currentDeferDate's hours
-					
-					set nextDeferDate's minutes to currentDeferDate's minutes
-					
-					set nextDeferDate's seconds to currentDeferDate's seconds
 					
 				end if
 				
