@@ -12,91 +12,97 @@ tell application "OmniFocus"
 	
 	tell content of first document window of front document
 		
-		set theTask to value of first item of (selected trees where class of its value is not item and class of its value is not folder)
+		set selectedTasks to selected trees
 		
-		--- determine next defer date:
-		
-		--- --- condition1: has repeat schedule
-		
-		set repRule to repetition rule of theTask
-		
-		if repRule is not missing value and defer date of theTask is not missing value then
+		repeat with taskNum from 1 to count of selectedTasks
 			
-			set repMethod to repetition method of repRule as string
+			set theTask to value of item taskNum of selectedTasks
 			
-			if repMethod is equal to "fixed repetition" then
-				
-				--- condititon: "Repeat From This Item's: Completion"
-				
-				set nextDeferDate to next defer date of theTask
-				
-			end if
+			--- determine next defer date:
 			
-			if repMethod is equal to "start after completion" then
-				
-				--- condition: "Repeat From This Item's: Assigned Dates"
-				
-				set _frequency to recurrence of repRule
-				
-				set _repetition to repetition method of repRule
-				
-				set repetition rule of theTask to {repetition method:fixed repetition, recurrence:_frequency}
-				
-				set nextDeferDate to next defer date of theTask
-				
-				set repetition rule of theTask to {repetition method:_repetition, recurrence:_frequency}
-				
-			end if
+			--- --- condition1: has repeat schedule
 			
-		else
+			set repRule to repetition rule of theTask
 			
-			--- --- condition2: has no repeat schedule
-			
-			if defer date of theTask is missing value then
+			if repRule is not missing value and defer date of theTask is not missing value then
 				
-				--- defer date is empty (either new task or defer date was removed manually):
+				set repMethod to repetition method of repRule as string
 				
-				set baseDate to current date
+				if repMethod is equal to "fixed repetition" then
+					
+					--- condititon: "Repeat From This Item's: Completion"
+					
+					set nextDeferDate to next defer date of theTask
+					
+				end if
 				
-				set baseDate's hours to deferTimeHours
-				
-				set baseDate's minutes to deferTimeMinutes
-				
-				set baseDate's seconds to deferTimeSeconds
-				
-				set nextDeferDate to baseDate + (1 * days)
+				if repMethod is equal to "start after completion" then
+					
+					--- condition: "Repeat From This Item's: Assigned Dates"
+					
+					set _frequency to recurrence of repRule
+					
+					set _repetition to repetition method of repRule
+					
+					set repetition rule of theTask to {repetition method:fixed repetition, recurrence:_frequency}
+					
+					set nextDeferDate to next defer date of theTask
+					
+					set repetition rule of theTask to {repetition method:_repetition, recurrence:_frequency}
+					
+				end if
 				
 			else
 				
-				--- defer date is set (re-use time but skip the day):
+				--- --- condition2: has no repeat schedule
 				
-				set currentDeferDate to defer date of theTask
-				
-				set currentDate to current date
-				
-				if currentDate's hours ² deferTimeHours then
-				
-				set nextDeferDate to current date
-				
+				if defer date of theTask is missing value then
+					
+					--- defer date is empty (either new task or defer date was removed manually):
+					
+					set baseDate to current date
+					
+					set baseDate's hours to deferTimeHours
+					
+					set baseDate's minutes to deferTimeMinutes
+					
+					set baseDate's seconds to deferTimeSeconds
+					
+					set nextDeferDate to baseDate + (1 * days)
+					
 				else
-				
-				set nextDeferDate to (current date) + (1 * days)
-				
+					
+					--- defer date is set (re-use time but skip the day):
+					
+					set currentDeferDate to defer date of theTask
+					
+					set currentDate to current date
+					
+					if currentDate's hours ² deferTimeHours then
+						
+						set nextDeferDate to current date
+						
+					else
+						
+						set nextDeferDate to (current date) + (1 * days)
+						
+					end if
+					
+					set nextDeferDate's hours to currentDeferDate's hours
+					
+					set nextDeferDate's minutes to currentDeferDate's minutes
+					
+					set nextDeferDate's seconds to currentDeferDate's seconds
+					
 				end if
-				
-				set nextDeferDate's hours to currentDeferDate's hours
-				
-				set nextDeferDate's minutes to currentDeferDate's minutes
-				
-				set nextDeferDate's seconds to currentDeferDate's seconds
 				
 			end if
 			
-		end if
-		
-		--- update defer date:
-		
-		set defer date of theTask to nextDeferDate
+			--- update defer date:
+			
+			set defer date of theTask to nextDeferDate
+			
+		end repeat
 		
 	end tell
 	
