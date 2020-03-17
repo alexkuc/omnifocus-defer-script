@@ -72,7 +72,17 @@ tell application "OmniFocus"
 				
 				set currentDeferDate to defer date of theTask
 				
+				set currentDate to current date
+				
+				if currentDate's hours ² deferTimeHours then
+				
+				set nextDeferDate to current date
+				
+				else
+				
 				set nextDeferDate to (current date) + (1 * days)
+				
+				end if
 				
 				set nextDeferDate's hours to currentDeferDate's hours
 				
