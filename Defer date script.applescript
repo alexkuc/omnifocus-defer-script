@@ -80,11 +80,11 @@ tell application "OmniFocus"
 					
 					set nextDeferDate's seconds to deferDate's seconds
 					
-					if nextDeferDate ² (current date) then
-						
-						set nextDeferDate to nextDeferDate + (1 * days)
-						
-					end if
+				end if
+				
+				if nextDeferDate ² (current date) then
+					
+					set nextDeferDate to nextDeferDate + (1 * days)
 					
 				end if
 				
