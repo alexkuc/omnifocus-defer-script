@@ -28,27 +28,33 @@ tell application "OmniFocus"
 				
 				set repMethod to repetition method of repRule as string
 				
+				set _frequency to recurrence of repRule
+				
+				set _repetition to repetition method of repRule
+				
 				if repMethod is equal to "fixed repetition" then
 					
 					--- condititon: "Repeat From This Item's: Completion"
 					
 					set nextDeferDate to next defer date of theTask
 					
-				end if
-				
-				if repMethod is equal to "start after completion" then
+				else if repMethod is equal to "start after completion" then
 					
 					--- condition: "Repeat From This Item's: Assigned Dates"
-					
-					set _frequency to recurrence of repRule
-					
-					set _repetition to repetition method of repRule
 					
 					set repetition rule of theTask to {repetition method:fixed repetition, recurrence:_frequency}
 					
 					set nextDeferDate to next defer date of theTask
 					
 					set repetition rule of theTask to {repetition method:_repetition, recurrence:_frequency}
+					
+				else if repMethod is equal to "due after completion" then
+					
+					--- condition: "Schedule the Next: Due Date"
+					
+					--- condition: (just created task with no due date or defer date)
+					
+					set repetition rule of theTask to {repetition method:start after completion, recurrence:_frequency}
 					
 				end if
 				
