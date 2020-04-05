@@ -18,13 +18,49 @@ tell application "OmniFocus"
 			
 			set theTask to value of item taskNum of selectedTasks
 			
-			--- determine next defer date:
+			--- set simple defer date
 			
-			--- --- condition1: has repeat schedule
+			set nextDeferDate to current date
+			
+			if defer date of theTask is missing value then
+				
+				--- defer date is empty (either new task or defer date was removed manually):
+				
+				set nextDeferDate's hours to deferTimeHours
+				
+				set nextDeferDate's minutes to deferTimeMinutes
+				
+				set nextDeferDate's seconds to deferTimeSeconds
+				
+			else
+				
+				--- defer date is set (keep time, reschedule date only):
+				
+				set deferDate to defer date of theTask
+				
+				set nextDeferDate's hours to deferDate's hours
+				
+				set nextDeferDate's minutes to deferDate's minutes
+				
+				set nextDeferDate's seconds to deferDate's seconds
+				
+			end if
+			
+			if nextDeferDate ² (current date) then
+				
+				set nextDeferDate to nextDeferDate + (1 * days)
+				
+			end if
+			
+			set defer date of theTask to nextDeferDate
+			
+			--- set defer date according to interval schedule (if exists)
+			
+			--- existing defer date is required for this specific approach to work
 			
 			set repRule to repetition rule of theTask
 			
-			if repRule is not missing value and defer date of theTask is not missing value then
+			if repRule is not missing value then
 				
 				set repMethod to repetition method of repRule as string
 				
@@ -58,47 +94,9 @@ tell application "OmniFocus"
 					
 				end if
 				
-			else
-				
-				--- --- condition2: has no repeat schedule
-				
-				set nextDeferDate to current date
-				
-				if defer date of theTask is missing value then
-					
-					--- defer date is empty (either new task or defer date was removed manually):
-					
-					set nextDeferDate's hours to deferTimeHours
-					
-					set nextDeferDate's minutes to deferTimeMinutes
-					
-					set nextDeferDate's seconds to deferTimeSeconds
-					
-				else
-					
-					--- defer date is set (keep time, reschedule date only):
-					
-					set deferDate to defer date of theTask
-					
-					set nextDeferDate's hours to deferDate's hours
-					
-					set nextDeferDate's minutes to deferDate's minutes
-					
-					set nextDeferDate's seconds to deferDate's seconds
-					
-				end if
-				
-				if nextDeferDate ² (current date) then
-					
-					set nextDeferDate to nextDeferDate + (1 * days)
-					
-				end if
+				set defer date of theTask to nextDeferDate
 				
 			end if
-			
-			--- update defer date:
-			
-			set defer date of theTask to nextDeferDate
 			
 		end repeat
 		
