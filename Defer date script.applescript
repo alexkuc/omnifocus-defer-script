@@ -18,13 +18,21 @@ tell application "OmniFocus"
 			
 			set theTask to value of item taskNum of selectedTasks
 			
-			--- set simple defer date
+			(*
+			
+			set simple defer date
+			
+			*)
 			
 			set nextDeferDate to current date
 			
 			if defer date of theTask is missing value then
 				
-				--- defer date is empty (either new task or defer date was removed manually):
+				(*
+				
+				defer date is empty (either new task or defer date was removed manually)
+				
+				*)
 				
 				set nextDeferDate's hours to deferTimeHours
 				
@@ -34,7 +42,11 @@ tell application "OmniFocus"
 				
 			else
 				
-				--- defer date is set (keep time, reschedule date only):
+				(*
+				
+				defer date is set (keep time, reschedule date only)
+				
+				*)
 				
 				set deferDate to defer date of theTask
 				
@@ -54,9 +66,11 @@ tell application "OmniFocus"
 			
 			set defer date of theTask to nextDeferDate
 			
-			--- set defer date according to interval schedule (if exists)
+			(*
 			
-			--- existing defer date is required for this specific approach to work
+			set defer date according to schedule (interval)
+			
+			*)
 			
 			set repRule to repetition rule of theTask
 			
@@ -88,13 +102,13 @@ tell application "OmniFocus"
 					
 					--- condition: "Schedule the Next: Due Date"
 					
-					--- condition: (just created task with no due date or defer date)
+					---                (just created task with no due date or defer date)
 					
 					set repetition rule of theTask to {repetition method:start after completion, recurrence:_frequency}
 					
 				end if
 				
-				set defer date of theTask to nextDeferDate
+				--- set defer date of theTask to nextDeferDate
 				
 			end if
 			
