@@ -64,7 +64,11 @@ tell application "OmniFocus"
 				
 			end if
 			
-			set defer date of theTask to nextDeferDate
+			if (defer date of theTask is missing value or defer date of theTask ² (current date)) and repetition rule of theTask is missing value then
+				
+				set defer date of theTask to nextDeferDate
+				
+			end if
 			
 			(*
 			
@@ -108,7 +112,7 @@ tell application "OmniFocus"
 					
 				end if
 				
-				--- set defer date of theTask to nextDeferDate
+				set defer date of theTask to nextDeferDate
 				
 			end if
 			
