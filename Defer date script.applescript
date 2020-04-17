@@ -123,8 +123,13 @@ tell application "OmniFocus"
 end tell
 
 on splitText(theText, theDelimiter)
+	
 	set AppleScript's text item delimiters to theDelimiter
+	
 	set theTextItems to every text item of theText
+	
 	set AppleScript's text item delimiters to ""
+	
 	return theTextItems
+	
 end splitText
