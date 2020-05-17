@@ -7,6 +7,7 @@ This OmniFocus script allows to defer tasks in a smart way. To be precise, it do
 - if the task has no defer date, it will deter to tomorrow honouring defer time preferences (`Date & Time Preferences`)
 - if the task has a defer date, it will defer to tomorrow *preserving* time
 - if the task has an interval, it will defer according to the interval *preserving* time and day (if applies) and honouring the interval days (if applies)
+- if you are working after midnight, defer for today instead of tomorrow
 
 >**Very important:** if your task has a schedule, you **need** to set initial defer date otherwise script won't work for that particular task. The reasoning is simple: the purpose of this script is to automate manual deferral as it is not possible to reliably guess initial defer date.
 
