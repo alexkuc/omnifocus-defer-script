@@ -23,7 +23,7 @@ Built-in feature in OmniFocus for deferral (i.e. +1 day/week/month) is great but
 - *hint:* OmniFocus -> Help (top menu) -> Open Scripts Folder
 - right click on OmniFocus toolbar, select customize and drag script's icon on the toolbar
 
->Special note: in my experience, I had an issue where running the script directly (from script editor) worked fined but inside OmniFocus it would throw an error.
+>Special note: in my experience, I had an issue where running the script directly (from script editor) worked fine but inside OmniFocus it would throw an error.
 
 Here's how I solved that issue:
 
