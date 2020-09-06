@@ -100,6 +100,16 @@ tell application "OmniFocus"
 					
 					set nextDeferDate to next defer date of theTask
 					
+					if nextDeferDate ² (current date) then
+						
+						using terms from scripting additions
+							
+							set nextDeferDate's day to (current date)'s day
+							
+						end using terms from
+						
+					end if
+					
 					set repetition rule of theTask to {repetition method:_repetition, recurrence:_frequency}
 					
 				else if repMethod is equal to "due after completion" then
@@ -109,6 +119,12 @@ tell application "OmniFocus"
 					---                (just created task with no due date or defer date)
 					
 					set repetition rule of theTask to {repetition method:start after completion, recurrence:_frequency}
+					
+				end if
+				
+				if nextDeferDate ² (current date) then
+					
+					set nextDeferDate to nextDeferDate + (1 * days)
 					
 				end if
 				
