@@ -37,7 +37,7 @@ tell application "OmniFocus"
 				set nextDeferDate's hours to deferTimeHours
 				
 				set nextDeferDate's minutes to deferTimeMinutes
-				
+
 				set nextDeferDate's seconds to deferTimeSeconds
 				
 			else
@@ -58,11 +58,11 @@ tell application "OmniFocus"
 				
 			end if
 			
-			if nextDeferDate ² (current date) then
+			repeat until nextDeferDate > (current date)
 				
 				set nextDeferDate to nextDeferDate + (1 * days)
 				
-			end if
+			end repeat
 			
 			if (defer date of theTask is missing value or defer date of theTask ² (current date)) and repetition rule of theTask is missing value then
 				
@@ -106,6 +106,10 @@ tell application "OmniFocus"
 							
 							set nextDeferDate's day to (current date)'s day
 							
+							set nextDeferDate's month to (current date)'s month
+							
+							set nextDeferDate's year to (current date)'s year
+							
 						end using terms from
 						
 					end if
@@ -122,11 +126,11 @@ tell application "OmniFocus"
 					
 				end if
 				
-				if nextDeferDate ² (current date) then
+				repeat until nextDeferDate > (current date)
 					
 					set nextDeferDate to nextDeferDate + (1 * days)
 					
-				end if
+				end repeat
 				
 				set defer date of theTask to nextDeferDate
 				
